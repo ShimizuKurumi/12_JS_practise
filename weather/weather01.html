@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>週間天気・服装</title>
     <link rel="stylesheet" href="./destyle.css">
     <style>
         body {
@@ -20,8 +20,12 @@
 
         .wrapper {
             width: 27%;
-            margin: 0 auto;
-            height: 100vh;
+            margin: 20vh auto 0;
+            height: 60vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
             background-color: rgba(255, 255, 255, 0.2);
             /* 背景色 */
             border: 1px solid rgba(255, 255, 255, 0.4);
@@ -59,8 +63,10 @@
             background-color: rgba(255, 255, 255, 0.5);
             border-radius: 0.5rem;
             /* color: #5356FF; */
+        }
 
-
+        tr:nth-child(even) {
+            background-color: rgba(255, 255, 255, 0.25);
         }
 
         h1 {
@@ -68,7 +74,7 @@
             text-align: center;
             font-size: 1.3rem;
             margin-bottom: 2rem;
-            padding-top: 4rem;
+            /* padding-top: 4rem; */
         }
 
         h1::after {
@@ -84,6 +90,21 @@
             display: flex;
             align-items: center;
             justify-content: center;
+        }
+
+        /* @media screen and (max-width: 768px) {
+            .wrapper {
+                width: 0%;
+                backdrop-filter: none;
+            }
+
+        } */
+
+        @media screen and (max-width: 480px) {
+            .wrapper {
+                width: 100%;
+                backdrop-filter: none;
+            }
         }
     </style>
 </head>
@@ -175,7 +196,7 @@
                         // tdElmWeather.innerHTML = weathercode[weekly[i]][3];
                         // trElm.appendChild(tdElmWeather);
                         //最高気温を行に追加
-                        tdElmsaikou.innerHTML = weeklysaikouKion[i];
+                        tdElmsaikou.innerHTML = `${weeklysaikouKion[i]}℃`;
                         trElm.appendChild(tdElmsaikou);
                         //服装
                         if (weeklysaikouKion[i] >= 30) {
