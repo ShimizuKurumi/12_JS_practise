@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>JSクイズ④</title>
+</head>
+
+<body>
+    <form>
+        <label for="postal-code">〒 <input type="text" name="postal-code" id="postal-code" value="4500002" /></label>
+        <button type="button">住所表示</button>
+    </form>
+    <div class="result">
+        <dl>
+            <dt>住所</dt>
+            <dd></dd>
+        </dl>
+    </div>
+</body>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"
+    integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+<script>
+    //こちらのコードのみを送ってください。
+    $('button').click(function () {
+    })
+
+    const btnVal = $('#postal-code').val('4500002');
+
+    const url = `https://zipcloud.ibsnet.co.jp/api/search?zipcode=${btnVal}`;
+
+    fetch(url)
+        .then(function (response) {
+            //接続できているかをステータスの応答で確認。エラーなら止める。
+            if (response.status !== 200) {
+                console.log("問題がありました。Status Code:" + response.status);
+                return;
+            }
+            //レスポンスをJSONに変換して、取得。
+            response.json().then(function (weather) {
+                console.log(weather);
+            });
+        })
+        //最終的にエラーなら通知。
+        .catch(function (err) {
+            console.log("Fetch Error:", err);
+        });
+</script>
+
+</html>

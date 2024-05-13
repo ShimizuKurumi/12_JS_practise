@@ -5,17 +5,110 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <link rel="stylesheet" href="./destyle.css">
+    <style>
+        body {
+            background-image:
+                radial-gradient(at 80% -20%, #fff 10%, transparent 40%),
+                radial-gradient(at 0% 70%, #fff, transparent 50%),
+                radial-gradient(at 0% 0%, #0ff, transparent),
+                radial-gradient(at 80% 40%, #ff9, transparent 40%),
+                radial-gradient(at 100% 100%, #675ee3, transparent);
+            background-attachment: fixed;
+            color: #5d6b89;
+        }
+
+        .wrapper {
+            width: 27%;
+            margin: 0 auto;
+            height: 100vh;
+            background-color: rgba(255, 255, 255, 0.2);
+            /* 背景色 */
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            /* ボーダー */
+            border-right-color: rgba(255, 255, 255, 0.2);
+            border-bottom-color: rgba(255, 255, 255, 0.2);
+            border-radius: 15px;
+            -webkit-backdrop-filter: blur(20px);
+            /* ぼかしエフェクト */
+            backdrop-filter: blur(20px);
+            box-shadow: 0 5px 20px rgba(0, 255, 255, 0.5);
+            /* 薄い影 */
+        }
+
+        table,
+        th,
+        td {
+            border-collapse: separate;
+            border-spacing: 0.3rem;
+        }
+
+        th {
+            background-color: #6E96ED;
+            color: #E5FAFD;
+            border-radius: 0.5rem;
+            font-weight: normal;
+            padding: 0.3rem 1rem;
+            font-size: 1rem;
+            text-align: center;
+        }
+
+        td {
+            font-size: 1rem;
+            padding: 0.3rem 1rem;
+            background-color: rgba(255, 255, 255, 0.5);
+            border-radius: 0.5rem;
+            /* color: #5356FF; */
+
+
+        }
+
+        h1 {
+            /* color: #5356FF; */
+            text-align: center;
+            font-size: 1.3rem;
+            margin-bottom: 2rem;
+            padding-top: 4rem;
+        }
+
+        h1::after {
+            content: "weather and clothes";
+            font-size: 0.8rem;
+            color: #6E96ED;
+            display: block;
+            margin-top: 0.2rem;
+        }
+
+
+        .seventh {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+    </style>
 </head>
 
 <body>
-    <div class="seventh">
-        <table>
-            <tr>
-                <th>日付</th>
-                <th>天気</th>
-            </tr>
-        </table>
+    <div class="wrapper">
+        <h1 class="title"></h1>
+        <div class="seventh">
+            <table>
+                <tr>
+                    <th>日付</th>
+                    <!-- <th>天気</th> -->
+                    <th>最高気温</th>
+                    <th>服装</th>
+                </tr>
+            </table>
+        </div>
+        <div class="time-div">
+            <p class="time"></p>
+        </div>
+        <div class="saikoukion-div">
+            <p class="saikoukion"></p>
+        </div>
     </div>
+
     <script src="./wethercodes.js"></script>
     <script>
         const codeNums = [{ 愛知県: 230000 }, { 岐阜県: 210000 }, { 三重県: 240000 }, { 静岡県: 220000 }];
@@ -35,19 +128,35 @@
                     const weeklyDate = data[1].timeSeries[0].timeDefines;
 
                     //最高気温を取得
+                    const saikouTodayElm = document.querySelector(".saikoukion_today");
+                    const saikouDiv = document.querySelector(".saikoukion-div");
+                    const saikoukion = document.querySelector(".saikoukion");
+
+
+                    const saikoukionP = document.createElement("p");
                     const weeklysaikouKion = data[1].timeSeries[1].areas[0].tempsMax;
-                    console.log(weeklysaikouKion);
+
+                    for (let i = 0; i < weeklysaikouKion.length; i++) {
+                        console.log(weeklysaikouKion[i]);
+                        // const pElm = document.createElement('p');
+                        // saikoukion.innerHTML = `最高気温は${weeklysaikouKion[i]}度`;
+                        saikouDiv.appendChild(saikoukion);
+                    }
 
 
                     //曜日設定用の配列を用意
-                    const dayarray = ["日曜日", "月曜日", "火曜日", "水曜日", "木曜日", "金曜日", "土曜日"];
+                    const dayarray = ["日", "月", "火", "水", "木", "金", "土"];
                     //表示させるDOMを取得
                     const seventhArea = document.querySelector(".seventh");
                     const tableElm = document.querySelector(".seventh table");
+                    const h1Elm = document.querySelector(".title");
+
                     //h1に愛知県を表示させて、追加する。
-                    const aichiTitle = document.createElement("h1");
-                    aichiTitle.innerHTML = `${data[1].timeSeries[0].areas[0].area.name}週間天気`;
-                    seventhArea.insertBefore(aichiTitle, tableElm);
+                    // const aichiTitle = document.createElement("h1");
+                    h1Elm.innerHTML = `${data[1].timeSeries[0].areas[0].area.name}の週間天気・服装`;
+                    // seventhArea.insertBefore(h1Elm);
+                    //    h1Elm .appendChild(h1Elm);
+
 
                     //1週間の日数をループさせる
                     for (let i = 0; i < weekly.length; i++) {
@@ -56,20 +165,59 @@
                         const trElm = document.createElement("tr");
                         const tdElmData = document.createElement("td");
                         const tdElmWeather = document.createElement("td");
+                        const tdElmsaikou = document.createElement("td");
+                        const tdElmHukusou = document.createElement("td");
+
                         //日数を行に設定
                         tdElmData.innerHTML = `${new Date(weeklyDate[i]).getMonth() + 1}月 ${new Date(weeklyDate[i]).getDate()}日（${dayarray[new Date(weeklyDate[i]).getDay()]}）`;
                         trElm.appendChild(tdElmData);
                         //更に天気コードから行に追加
-                        tdElmWeather.innerHTML = weathercode[weekly[i]][3];
-                        trElm.appendChild(tdElmWeather);
+                        // tdElmWeather.innerHTML = weathercode[weekly[i]][3];
+                        // trElm.appendChild(tdElmWeather);
+                        //最高気温を行に追加
+                        tdElmsaikou.innerHTML = weeklysaikouKion[i];
+                        trElm.appendChild(tdElmsaikou);
+                        //服装
+                        if (weeklysaikouKion[i] >= 30) {
+                            console.log("半袖");
+                            tdElmHukusou.innerHTML = "半袖";
+                        } else if (weeklysaikouKion[i] >= 25) {
+                            console.log("半袖シャツ");
+                            tdElmHukusou.innerHTML = "半袖シャツ";
+                        } else if (weeklysaikouKion[i] < 25) {
+                            console.log("長袖シャツ");
+                            tdElmHukusou.innerHTML = "長袖シャツ";
+                        } else if (weeklysaikouKion[i] < 20) {
+                            console.log("カーディガン");
+                            tdElmHukusou.innerHTML = "カーディガン";
+                        } else if (weeklysaikouKion[i] < 16) {
+                            console.log("セーター");
+                            tdElmHukusou.innerHTML = "セーター";
+                        } else if (weeklysaikouKion[i] < 12) {
+                            console.log("トレンチコート");
+                            tdElmHukusou.innerHTML = "トレンチコート";
+                        } else if (weeklysaikouKion[i] < 8) {
+                            console.log("冬物コート");
+                            tdElmHukusou.innerHTML = "冬物コート";
+
+                        } else if (weeklysaikouKion[i] < 5) {
+                            console.log("ダウンコート");
+                            tdElmHukusou.innerHTML = "ダウンコート";
+
+                        }
+                        trElm.appendChild(tdElmHukusou);
+
+
                         //tableに行を追加
                         tableElm.appendChild(trElm);
                     }
+
                 });
             })
             .catch(function (err) {
                 console.log("Fetchエラー:", err);
-            });    </script>
+            });
+    </script>
 </body>
 
 </html>
