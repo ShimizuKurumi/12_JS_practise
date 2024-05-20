@@ -8,24 +8,23 @@
     <link rel="stylesheet" href="./destyle.css">
     <style>
         body {
-            background-image:
-                radial-gradient(at 80% -20%, #fff 10%, transparent 40%),
-                radial-gradient(at 0% 70%, #fff, transparent 50%),
-                radial-gradient(at 0% 0%, #0ff, transparent),
-                radial-gradient(at 80% 40%, #ff9, transparent 40%),
-                radial-gradient(at 100% 100%, #675ee3, transparent);
+            background-image: url(./images/01.webp);
             background-attachment: fixed;
-            color: #5d6b89;
+            background-repeat: no-repeat;
+            background-size: cover;
+            color: #333;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            width: 100%;
+
         }
 
         .wrapper {
+
             width: 27%;
-            margin: 20vh auto 0;
-            height: 60vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
+            padding: 2rem 0;
             background-color: rgba(255, 255, 255, 0.2);
             /* 背景色 */
             border: 1px solid rgba(255, 255, 255, 0.4);
@@ -36,7 +35,7 @@
             -webkit-backdrop-filter: blur(20px);
             /* ぼかしエフェクト */
             backdrop-filter: blur(20px);
-            box-shadow: 0 5px 20px rgba(0, 255, 255, 0.5);
+            box-shadow: 0 5px 20px rgba(254, 141, 25, 0.5);
             /* 薄い影 */
         }
 
@@ -48,13 +47,16 @@
         }
 
         th {
-            background-color: #6E96ED;
+            background-color: #FF8504;
             color: #E5FAFD;
             border-radius: 0.5rem;
             font-weight: normal;
             padding: 0.3rem 1rem;
             font-size: 1rem;
             text-align: center;
+            display: table-cell;
+            vertical-align: middle;
+
         }
 
         td {
@@ -72,19 +74,11 @@
         h1 {
             /* color: #5356FF; */
             text-align: center;
-            font-size: 1.3rem;
-            margin-bottom: 2rem;
+            font-size: 1.2rem;
+            margin-bottom: 1.1rem;
             /* padding-top: 4rem; */
+            line-height: 1.4;
         }
-
-        h1::after {
-            content: "weather and clothes";
-            font-size: 0.8rem;
-            color: #6E96ED;
-            display: block;
-            margin-top: 0.2rem;
-        }
-
 
         .seventh {
             display: flex;
@@ -92,18 +86,31 @@
             justify-content: center;
         }
 
-        /* @media screen and (max-width: 768px) {
+        br {
+            display: none;
+        }
+
+        .br-pc {
+            display: block;
+        }
+
+        @media screen and (max-width: 1024px) {
             .wrapper {
-                width: 0%;
+                width: 60%;
                 backdrop-filter: none;
             }
 
-        } */
+            .br-sp {
+                display: block;
+            }
+
+        }
 
         @media screen and (max-width: 480px) {
             .wrapper {
-                width: 100%;
+                width: 90%;
                 backdrop-filter: none;
+                padding: 2rem 1rem;
             }
         }
     </style>
@@ -117,7 +124,7 @@
                 <tr>
                     <th>日付</th>
                     <!-- <th>天気</th> -->
-                    <th>最高気温</th>
+                    <th>最高<br class="br-sp">気温</th>
                     <th>服装</th>
                 </tr>
             </table>
@@ -131,6 +138,8 @@
     </div>
 
     <script src="./wethercodes.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.js"
+        integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
     <script>
         const codeNums = [{ 愛知県: 230000 }, { 岐阜県: 210000 }, { 三重県: 240000 }, { 静岡県: 220000 }];
         const weekUrl = `https://www.jma.go.jp/bosai/forecast/data/forecast/${codeNums[0]["愛知県"]}.json`;
@@ -157,8 +166,9 @@
                     const saikoukionP = document.createElement("p");
                     const weeklysaikouKion = data[1].timeSeries[1].areas[0].tempsMax;
 
+
                     for (let i = 0; i < weeklysaikouKion.length; i++) {
-                        console.log(weeklysaikouKion[i]);
+                        console.log(typeof (weeklysaikouKion[i]));
                         // const pElm = document.createElement('p');
                         // saikoukion.innerHTML = `最高気温は${weeklysaikouKion[i]}度`;
                         saikouDiv.appendChild(saikoukion);
@@ -174,7 +184,7 @@
 
                     //h1に愛知県を表示させて、追加する。
                     // const aichiTitle = document.createElement("h1");
-                    h1Elm.innerHTML = `${data[1].timeSeries[0].areas[0].area.name}の週間天気・服装`;
+                    h1Elm.innerHTML = `${data[1].timeSeries[0].areas[0].area.name}の<br class="br-pc">週間天気・服装`;
                     // seventhArea.insertBefore(h1Elm);
                     //    h1Elm .appendChild(h1Elm);
 
@@ -231,6 +241,67 @@
 
                         //tableに行を追加
                         tableElm.appendChild(trElm);
+
+                    }
+
+                    let sum = 0;
+
+                    weeklysaikouKion.forEach(score => {
+
+                        let numscore = Number(score);
+                        sum += numscore;
+
+                    })
+
+                    const average = sum / (weeklysaikouKion.length - 1);
+                    // const average = 5;
+                    console.log(sum, weeklysaikouKion.length - 1);
+                    console.log(Math.round(average));
+
+                    //取得
+                    const body = document.querySelector("body");
+                    const th = document.querySelectorAll("th");
+                    const thAll = th.forEach(function (thElm) {
+                        console.log(thElm);
+                    });
+
+
+                    //画像
+                    const imageUrl01 = "./images/01.webp";
+                    const imageUrl02 = "./images/02.webp";
+                    const imageUrl03 = "./images/03.webp";
+                    const imageUrl04 = "./images/04.webp";
+                    const imageUrl05 = "./images/05.jpg";
+                    const imageUrl06 = "./images/06.webp";
+
+
+                    if (average >= 35) {
+                        body.style.backgroundImage = `url(${imageUrl01})`;
+                    }
+                    else if (average >= 30) {
+                        body.style.backgroundImage = `url(${imageUrl03})`;
+                        $("th").css({ 'background-color': '#4DC9DE', });
+                        $(".wrapper").css({ 'box-shadow': '0 5px 20px rgba(66, 210, 229, 0.5)', });
+
+                    } else if (average >= 25) {
+                        body.style.backgroundImage = `url(${imageUrl05})`;
+                        $("th").css({ 'background-color': '#F2791A', });
+                        $(".wrapper").css({ 'box-shadow': '0 5px 20px rgba(242, 120, 26, 0.5)', });
+
+                    } else if (average >= 15) {
+                        body.style.backgroundImage = `url(${imageUrl04})`;
+                        $("th").css({ 'background-color': '#42D357', });
+                        $(".wrapper").css({ 'box-shadow': '0 5px 20px rgba(66, 211, 88, 0.5)', });
+
+                    } else if (average >= 10) {
+                        body.style.backgroundImage = `url(${imageUrl02})`;
+                        $("th").css({ 'background-color': '#8CB8FB', });
+                        $(".wrapper").css({ 'box-shadow': '0 5px 20px rgba(140, 184, 251, 0.5)', });
+
+                    } else if (average >= 5) {
+                        body.style.backgroundImage = `url(${imageUrl06})`;
+                        $("th").css({ 'background-color': '#80BAFB', });
+                        $(".wrapper").css({ 'box-shadow': '0 5px 20px rgba(150, 191, 253, 0.5)', });
                     }
 
                 });
