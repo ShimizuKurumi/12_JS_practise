@@ -13,15 +13,17 @@
             background-repeat: no-repeat;
             background-size: cover;
             color: #333;
-            display: flex;
+            /* display: flex;
             align-items: center;
             justify-content: center;
-            height: 100vh;
+            flex-direction: column; */
             width: 100%;
+            padding-top: 4rem;
 
         }
 
         .wrapper {
+            margin: 0 auto;
 
             width: 27%;
             padding: 2rem 0;
@@ -37,6 +39,8 @@
             backdrop-filter: blur(20px);
             box-shadow: 0 5px 20px rgba(254, 141, 25, 0.5);
             /* 薄い影 */
+
+            margin-bottom: 2rem;
         }
 
         table,
@@ -94,6 +98,19 @@
             display: block;
         }
 
+        .ashita_hukusou {
+            font-size: 1.5rem;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+
+        .ashita_caption {
+            padding: 0 2rem;
+            opacity: 0.9;
+            text-align: justify;
+        }
+
         @media screen and (max-width: 1024px) {
             .wrapper {
                 width: 60%;
@@ -111,6 +128,7 @@
                 width: 90%;
                 backdrop-filter: none;
                 padding: 2rem 1rem;
+                display: block;
             }
         }
     </style>
@@ -135,6 +153,12 @@
         <div class="saikoukion-div">
             <p class="saikoukion"></p>
         </div>
+    </div>
+
+    <div class="wrapper">
+        <h1>明日の服装</h1>
+        <p class="ashita_hukusou"></p>
+        <p class="ashita_caption"></p>
     </div>
 
     <script src="./wethercodes.js"></script>
@@ -184,9 +208,66 @@
 
                     //h1に愛知県を表示させて、追加する。
                     // const aichiTitle = document.createElement("h1");
-                    h1Elm.innerHTML = `${data[1].timeSeries[0].areas[0].area.name}の<br class="br-pc">週間天気・服装`;
+                    h1Elm.innerHTML = `${data[1].timeSeries[0].areas[0].area.name}の<br class="br-pc">最高気温・服装`;
                     // seventhArea.insertBefore(h1Elm);
                     //    h1Elm .appendChild(h1Elm);
+
+                    //明日の最高気温
+                    const weeklysaikouKionAsita = data[1].timeSeries[1].areas[0].tempsMax[1];
+
+                    console.log(weeklysaikouKionAsita)
+
+                    //明日の服装
+                    //服装
+                    //キャプション
+                    const ashitacaption = document.querySelector(".ashita_caption");
+                    const ashitahukusou = document.querySelector(".ashita_hukusou");
+
+                    if (weeklysaikouKionAsita >= 30) {
+                        console.log("半袖");
+                        ashitahukusou.innerHTML = "半袖";
+                        ashitacaption.innerHTML = "半袖の日は、日焼け止めを塗り、帽子をかぶって日差しを避けながら、涼しい場所でリラックス。水分補給を忘れずにし、公園やカフェで友達と楽しい時間を過ごしましょう。";
+
+                    } else if (weeklysaikouKionAsita >= 25) {
+                        console.log("半袖シャツ");
+                        ashitahukusou.innerHTML = "半袖シャツ";
+                        ashitacaption.innerHTML = "半袖の日は、日焼け止めを塗り、帽子をかぶって日差しを避けながら、涼しい場所でリラックス。水分補給を忘れずにし、公園やカフェで友達と楽しい時間を過ごしましょう。";
+
+                    } else if (weeklysaikouKionAsita < 25) {
+                        console.log("長袖シャツ");
+                        ashitahukusou.innerHTML = "長袖シャツ";
+                        ashitacaption.innerHTML = "長袖の日は、涼しい気候に合わせて散歩や軽い運動を楽しむのがおすすめです。また、カフェでゆったりと読書や友人とお茶をするのも良いでしょう。温かい飲み物が心地よい季節です。";
+
+                    } else if (weeklysaikouKionAsita < 20) {
+                        console.log("カーディガン");
+                        ashitahukusou.innerHTML = "カーディガン";
+                        ashitacaption.innerHTML = "カーディガンを着てカフェで読書を楽しんだり、秋の公園を散歩したりします。友人とランチを楽しむのもいいですね。快適なカーディガンが温かく過ごすのに最適です。";
+
+                    } else if (weeklysaikouKionAsita < 16) {
+                        console.log("セーター");
+                        ashitahukusou.innerHTML = "セーター";
+                        ashitacaption.innerHTML = "セーターを着る日は、温かい飲み物を片手に、読書や映画鑑賞を楽しむのが最高です。散歩やカフェ巡りもおすすめです。リラックスして過ごしましょう。";
+
+                    } else if (weeklysaikouKionAsita < 12) {
+                        console.log("トレンチコート");
+                        ashitahukusou.innerHTML = "トレンチコート";
+                        ashitacaption.innerHTML = "トレンチコートを着る日は、都会の喧騒を忘れ、街を散策。カフェで一息つき、本を読み、美術館を訪れる。夕暮れには友人とディナーを楽しみ、思い出に残る一日を過ごす。";
+
+                    } else if (weeklysaikouKionAsita < 8) {
+                        console.log("冬物コート");
+                        ashitahukusou.innerHTML = "冬物コート";
+                        ashitacaption.innerHTML = "寒い日は、暖かい飲み物を飲みながら、お気に入りの本を読んだり、映画を見たりするのがいいです。毛布に包まれてリラックスし、心地よい音楽を聴くのもおすすめです。";
+
+
+                    } else if (weeklysaikouKionAsita < 5) {
+                        console.log("ダウンコート");
+                        ashitahukusou.innerHTML = "ダウンコート";
+                        ashitacaption.innerHTML = "ダウンコートを着る日は、温かく過ごせるように重ね着を心がけましょう。冷え込む外出先でもホットドリンクで体を温め、風邪予防にマスクや手袋も持参するのがおすすめです。";
+
+
+                    }
+
+
 
 
                     //1週間の日数をループさせる
@@ -206,7 +287,7 @@
                         // tdElmWeather.innerHTML = weathercode[weekly[i]][3];
                         // trElm.appendChild(tdElmWeather);
                         //最高気温を行に追加
-                        tdElmsaikou.innerHTML = `${weeklysaikouKion[i]}℃`;
+                        tdElmsaikou.innerHTML = `<span>${weeklysaikouKion[i]}</span>℃`;
                         trElm.appendChild(tdElmsaikou);
                         //服装
                         if (weeklysaikouKion[i] >= 30) {
@@ -253,8 +334,9 @@
 
                     })
 
-                    const average = sum / (weeklysaikouKion.length - 1);
-                    // const average = 5;
+                    //背景変更-----------------------------------------------------------------
+                    // const average = sum / (weeklysaikouKion.length - 1);
+                    const average = 40;
                     console.log(sum, weeklysaikouKion.length - 1);
                     console.log(Math.round(average));
 
@@ -281,11 +363,13 @@
                     else if (average >= 30) {
                         body.style.backgroundImage = `url(${imageUrl03})`;
                         $("th").css({ 'background-color': '#4DC9DE', });
+
                         $(".wrapper").css({ 'box-shadow': '0 5px 20px rgba(66, 210, 229, 0.5)', });
 
                     } else if (average >= 25) {
                         body.style.backgroundImage = `url(${imageUrl05})`;
                         $("th").css({ 'background-color': '#F2791A', });
+
                         $(".wrapper").css({ 'box-shadow': '0 5px 20px rgba(242, 120, 26, 0.5)', });
 
                     } else if (average >= 15) {
